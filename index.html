@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ministério de Louvor</title>   
+  <link rel="shortcut icon" href="./iconeseimagens/android-chrome-192x192.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <form id="formLouvor">
+    <label for="nome">Nome de quem vai cantar:</label>
+    <input type="text" id="nome" name="nome" placeholder="Digite o nome" required>
+
+    <label for="dia">Dia:</label>
+    <select id="dia" name="dia" required>
+      <option value=""  disabled selected>Selecione o dia</option>
+
+      
+      <!-- Preenchendo os dias de 1 a 31 -->
+    </select>
+
+    <label for="mes">Mês:</label>
+    <select id="mes" name="mes" required>
+      <option value=""  disabled selected>Selecione o mês</option>
+      <option value="Janeiro">Janeiro</option>
+      <option value="Fevereiro">Fevereiro</option>
+      <option value="Março">Março</option>
+      <option value="Abril">Abril</option>
+      <option value="Maio">Maio</option>
+      <option value="Junho">Junho</option>
+      <option value="Julho">Julho</option>
+      <option value="Agosto">Agosto</option>
+      <option value="Setembro">Setembro</option>
+      <option value="Outubro">Outubro</option>
+      <option value="Novembro">Novembro</option>
+      <option value="Dezembro">Dezembro</option>
+    </select>
+
+    <label for="hino">Hino:</label>
+    <input type="text" id="hino" name="hino" placeholder="Digite o hino" required>
+
+    <label for="link">Link adicional (opcional):</label>
+    <input type="url" id="link" name="link" placeholder="Insira um link, se houver">
+
+    <button type="button" id="enviarBtn">Enviar</button>
+    <button type="button" id="verDadosBtn">Ver Dados Salvos</button>
+  </form>
+
+  <script>
+   document.getElementById('enviarBtn').addEventListener('click', () => {
+      const nome = document.getElementById('nome').value;
+      const dia = document.getElementById('dia').value;
+      const mes = document.getElementById('mes').value;
+      const hino = document.getElementById('hino').value;
+      const link = document.getElementById('link').value;
+
+      if (!nome || !dia || !mes || !hino) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      // Obter os dados salvos anteriormente no Local Storage
+      const dadosSalvos = JSON.parse(localStorage.getItem('agendaLouvor')) || [];
+
+      // Adicionar novos dados
+      dadosSalvos.push({ nome, dia, mes, hino, link, ano: 2025 });
+
+      // Salvar os dados atualizados no Local Storage
+      localStorage.setItem('agendaLouvor', JSON.stringify(dadosSalvos));
+
+      alert('Dados salvos com sucesso!');
+      document.getElementById('formLouvor').reset();
+    });
+    document.getElementById('verDadosBtn')?.addEventListener('click', () => {
+      const dadosSalvos = JSON.parse(localStorage.getItem('agendaLouvor')) || [];
+      if (dadosSalvos.length === 0) {
+        alert('Nenhum dado encontrado.');
+        return;
+      }
+      console.table(dadosSalvos);
+      alert('Os dados foram exibidos no console do navegador.');
+    });
+
+    const dias=Array.from({length: 31}).map((_, i) => '<option value="' +( i + 1) + '" >' +( i + 1) + '</option>')
+
+    document.getElementById("dia").innerHTML+=dias
+      </script>
+</body>
+</html>
